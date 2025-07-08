@@ -65,7 +65,12 @@ pip install -r requirements.txt
 
 基本的な使い方：
 ```bash
-python src/main.py
+python run.py
+```
+
+または：
+```bash
+python -m src.main
 ```
 
 サンプルスクリプトの実行：

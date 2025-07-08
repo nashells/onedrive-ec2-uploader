@@ -1,6 +1,11 @@
 import os
 import requests
 from typing import Optional, Dict, Any
+import sys
+
+# プロジェクトルートをPythonパスに追加
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+
 from src.utils.config import Config
 
 

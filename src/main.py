@@ -2,6 +2,10 @@ import os
 import sys
 from pathlib import Path
 from requests.exceptions import HTTPError
+
+# プロジェクトルートをPythonパスに追加
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from src.auth.authenticator import OneDriveAuthenticator
 from src.api.onedrive_client import OneDriveClient
 from src.utils.config import Config
