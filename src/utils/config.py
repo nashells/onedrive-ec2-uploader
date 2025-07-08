@@ -8,12 +8,14 @@ class Config:
     CLIENT_SECRET = os.getenv('CLIENT_SECRET')
     TENANT_ID = os.getenv('TENANT_ID', 'common')
     REDIRECT_URI = os.getenv('REDIRECT_URI', 'http://localhost:8000')
-    SCOPE = os.getenv('SCOPE', 'Files.ReadWrite.All offline_access').split()
+    # スコープをリストで明示的に指定（個人用アカウント用）
+    SCOPE = ["https://graph.microsoft.com/Files.ReadWrite.All"]
     
     LOG_LEVEL = os.getenv('LOG_LEVEL', 'INFO')
     LOG_FILE = os.getenv('LOG_FILE', 'onedrive_uploader.log')
     
-    AUTHORITY = f"https://login.microsoftonline.com/{TENANT_ID}"
+    # 個人用アカウント向けのエンドポイントを使用
+    AUTHORITY = "https://login.microsoftonline.com/consumers"
     GRAPH_API_ENDPOINT = "https://graph.microsoft.com/v1.0"
     
     @classmethod

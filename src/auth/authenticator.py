@@ -44,6 +44,7 @@ class OneDriveAuthenticator:
             with open(self.token_cache_file, 'r') as f:
                 cache.deserialize(f.read())
         
+        # 個人用アカウント用のConfidentialClientApplicationを使用
         app = msal.ConfidentialClientApplication(
             self.config.CLIENT_ID,
             authority=self.config.AUTHORITY,
@@ -62,10 +63,10 @@ class OneDriveAuthenticator:
         
         if accounts:
             result = self.app.acquire_token_silent(
-                self.config.SCOPE,
+                scopes=self.config.SCOPE,
                 account=accounts[0]
             )
-            if result:
+            if result and "access_token" in result:
                 self._save_cache()
                 return result
         
@@ -73,7 +74,7 @@ class OneDriveAuthenticator:
     
     def _get_token_interactive(self):
         auth_url = self.app.get_authorization_request_url(
-            self.config.SCOPE,
+            scopes=self.config.SCOPE,
             redirect_uri=self.config.REDIRECT_URI
         )
         
@@ -88,7 +89,7 @@ class OneDriveAuthenticator:
             raise Exception("認証コードの取得に失敗しました")
         
         result = self.app.acquire_token_by_authorization_code(
-            server.auth_code,
+            code=server.auth_code,
             scopes=self.config.SCOPE,
             redirect_uri=self.config.REDIRECT_URI
         )
@@ -104,8 +105,8 @@ class OneDriveAuthenticator:
         if not accounts:
             return self._get_token_interactive()
         
-        result = self.app.acquire_token_silent_with_error(
-            self.config.SCOPE,
+        result = self.app.acquire_token_silent(
+            scopes=self.config.SCOPE,
             account=accounts[0]
         )
         
