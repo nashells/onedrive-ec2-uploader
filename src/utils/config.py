@@ -5,11 +5,14 @@ load_dotenv()
 
 class Config:
     CLIENT_ID = os.getenv('CLIENT_ID')
-    CLIENT_SECRET = os.getenv('CLIENT_SECRET')
+    # デバイスコードフローではクライアントシークレットは不要
+    CLIENT_SECRET = os.getenv('CLIENT_SECRET')  # 互換性のため残す
     TENANT_ID = os.getenv('TENANT_ID', 'common')
-    REDIRECT_URI = os.getenv('REDIRECT_URI', 'http://localhost:8000')
-    # スコープをリストで明示的に指定（個人用アカウント用）
-    SCOPE = ["https://graph.microsoft.com/Files.ReadWrite.All"]
+    # デバイスコードフローではリダイレクトURIは不要
+    REDIRECT_URI = None
+    
+    # EC2/サーバー環境用のスコープ設定（簡略化）
+    SCOPE = ["Files.ReadWrite.All"]
     
     LOG_LEVEL = os.getenv('LOG_LEVEL', 'INFO')
     LOG_FILE = os.getenv('LOG_FILE', 'onedrive_uploader.log')
